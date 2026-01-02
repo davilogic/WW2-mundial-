@@ -46,3 +46,31 @@ onSnapshot(q, (snapshot) => {
     });
     chatBox.scrollTop = chatBox.scrollHeight; // Rola o chat para baixo
 });
+import { doc, setDoc, getDoc } from "firebase/firestore";
+
+// FUNÇÃO PARA SALVAR O PERFIL
+window.salvarPerfil = async () => {
+    const nome = document.getElementById('perf-nome').value;
+    const bio = document.getElementById('perf-bio').value;
+    const foto = document.getElementById('perf-foto').value;
+
+    if (!nome) return alert("Soldado! Você precisa de um nome de guerra!");
+
+    // Aqui criamos um ID único baseado no nome (ou você pode usar o ID do dispositivo)
+    const idUsuario = nome.toLowerCase().replace(/\s+/g, '-'); 
+
+    try {
+        await setDoc(doc(db, "usuarios", idUsuario), {
+            nome: nome,
+            bio: bio,
+            foto: foto || "https://i.imgur.com/v8pE8C8.png", // Imagem padrão se ficar vazio
+            cargo: "Soldado"
+        });
+        localStorage.setItem("meuIdRPG", idUsuario); // Salva no navegador pra ele não ter que logar sempre
+        alert("Perfil salvo com sucesso! Pronto para o combate.");
+        showSection('chat'); // Manda ele direto pro chat depois de salvar
+    } catch (e) {
+        alert("Erro ao salvar ficha: " + e);
+    }
+};
+
