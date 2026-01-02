@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WW2 GUERRA MUNDIAL - RPG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>WW2: BRASIL vs ALEMANHA</h1>
+        <nav>
+            <button onclick="showSection('loja')">Arsenal (Loja)</button>
+            <button onclick="showSection('chat')">Trincheiras (Chat)</button>
+            <button onclick="showSection('denuncias')">Relatórios</button>
+            <button onclick="showSection('admin')">Comando Central</button>
+        </nav>
+    </header>
+
+    <main id="content">
+        <section id="loja" class="active">
+            <h2>Loja VIP - Fortaleça seu Exército</h2>
+            <div id="lista-vips" class="grid-container">
+                </div>
+        </section>
+
+        <section id="chat" style="display:none;">
+            <h2>Chat das Tropas</h2>
+            <div id="chat-box"></div>
+            <div class="input-group">
+                <input type="text" id="chat-input" placeholder="Digite sua mensagem, soldado...">
+                <button onclick="enviarMensagem()">Enviar</button>
+            </div>
+        </section>
+
+        <section id="admin" style="display:none;">
+            <h2>Acesso Restrito</h2>
+            <div id="login-admin">
+                <input type="password" id="codigo-admin" placeholder="Código de Acesso">
+                <button onclick="acessarPainel()">Autenticar</button>
+            </div>
+            <div id="painel-controle" style="display:none;">
+                <h3>Painel de Comando</h3>
+                <button onclick="banirUsuario()">Banir Soldado</button>
+                <button onclick="limparChat()">Limpar Trincheiras</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a href="https://discord.gg/WMaDevNNy" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" width="30"> Junte-se ao Discord
+        </a>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
