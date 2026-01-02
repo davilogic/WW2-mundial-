@@ -1,0 +1,64 @@
+body {
+    background-color: #2b2b2b; /* Fundo escuro */
+    background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png'); /* Textura */
+    color: #d2b48c; /* Cor de papel antigo */
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    text-align: center;
+}
+
+header {
+    background: #4b5320; /* Verde Oliva */
+    padding: 20px;
+    border-bottom: 5px solid #3e3e3e;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+h1 {
+    text-shadow: 2px 2px #000;
+    letter-spacing: 3px;
+}
+
+nav button {
+    background: #3e3e3e;
+    color: white;
+    border: 2px solid #d2b48c;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+nav button:hover {
+    background: #d2b48c;
+    color: #000;
+}
+
+section {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+#chat-box {
+    height: 400px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 3px solid #4b5320;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    padding: 15px;
+    text-align: left;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.vip-card {
+    background: #3e3e3e;
+    border: 1px solid #d2b48c;
+    padding: 15px;
+  }
