@@ -3,84 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WW2 GUERRA MUNDIAL - RPG</title>
+    <title>WW2 GUERRA MUNDIAL</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <h1>WW2: BRASIL vs ALEMANHA</h1>
-        <nav>
-            <button onclick="showSection('perfil')">Meu Perfil</button>
-            <button onclick="showSection('loja')">Arsenal (Loja)</button>
-            <button onclick="showSection('chat')">Trincheiras (Chat)</button>
-            <button onclick="showSection('denuncias')">Denúncias/Sugestões</button>
-            <button onclick="showSection('admin')">Comando 2012</button>
+    <div class="discord-container">
+        <nav class="sidebar">
+            <div class="server-icon" onclick="showSection('home')">WW2</div>
+            <hr>
+            <div class="nav-item" onclick="showSection('perfil')" title="Perfil">👤</div>
+            <div class="nav-item" onclick="showSection('chat')" title="Chat Geral">💬</div>
+            <div class="nav-item" onclick="showSection('loja')" title="Loja VIP">🛒</div>
+            <div class="nav-item" onclick="showSection('denuncias')" title="Denúncias">🚫</div>
+            <div class="nav-item admin-only" onclick="showSection('admin')" title="Painel Admin">⚙️</div>
         </nav>
-    </header>
 
-    <main id="content">
-        <section id="perfil">
-            <div class="militar-card">
-                <h2>Ficha de Alistamento</h2>
-                <input type="text" id="perf-nome" placeholder="Nome de Guerra">
-                <input type="text" id="perf-foto" placeholder="URL da Foto/Logo">
-                <textarea id="perf-bio" placeholder="Sua biografia militar..."></textarea>
-                <button class="btn-militar" onclick="salvarPerfil()">CONFIRMAR ALISTAMENTO</button>
-            </div>
-        </section>
+        <main class="content-area">
+            <header class="top-bar">
+                <h1 id="main-title">WW2 GUERRA MUNDIAL</h1>
+                <a href="https://discord.gg/WMaDevNNy" target="_blank" class="discord-link">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
+                </a>
+            </header>
 
-        <section id="loja" style="display:none;">
-            <h2>Loja VIP</h2>
-            <div id="lista-vips" class="grid-container">
+            <section id="home" class="tab-content active">
+                <h2>Bem-vindo ao Front</h2>
+                <p>Prepare-se para a maior simulação de guerra entre Brasil e Alemanha.</p>
+            </section>
+
+            <section id="perfil" class="tab-content">
+                <div class="card">
+                    <h2>Identidade Militar</h2>
+                    <input type="text" id="perf-nome" placeholder="Nome de Guerra">
+                    <input type="text" id="perf-foto" placeholder="URL da Logo/Avatar">
+                    <textarea id="perf-bio" placeholder="Sua Bio..."></textarea>
+                    <button class="btn-primary" onclick="salvarPerfil()">ATUALIZAR DADOS</button>
                 </div>
-        </section>
+            </section>
 
-        <section id="chat" style="display:none;">
-            <div id="chat-box"></div>
-            <div class="input-group">
-                <input type="text" id="chat-input" placeholder="Mensagem para a tropa...">
-                <button onclick="enviarMensagem()">ENVIAR</button>
-            </div>
-        </section>
-
-        <section id="denuncias" style="display:none;">
-            <h2>Relatórios de Campo</h2>
-            <input type="text" id="den-titulo" placeholder="Título">
-            <textarea id="den-desc" placeholder="Descrição da Denúncia ou Sugestão"></textarea>
-            <input type="text" id="den-midia" placeholder="Link de Imagem ou Vídeo (Opcional)">
-            <button onclick="enviarDenuncia()">ENVIAR RELATÓRIO</button>
-            <div id="lista-denuncias"></div>
-        </section>
-
-        <section id="admin" style="display:none;">
-            <div id="login-admin">
-                <input type="password" id="codigo-admin" placeholder="Código de Comando">
-                <button onclick="acessarPainel()">ENTRAR</button>
-            </div>
-            
-            <div id="painel-controle" style="display:none;">
-                <h3>PAINEL DE COMANDO (MODO ADMIN)</h3>
-                <div class="admin-tools">
-                    <h4>Postar VIP</h4>
-                    <input type="text" id="vip-nome" placeholder="Nome do VIP">
-                    <input type="text" id="vip-desc" placeholder="Descrição">
-                    <input type="text" id="vip-preco" placeholder="Valor">
-                    <button onclick="postarVip()">POSTAR NA LOJA</button>
-                    <hr>
-                    <h4>Gerenciamento</h4>
-                    <input type="text" id="ban-nome" placeholder="Nome para Banir">
-                    <button class="btn-danger" onclick="banirUsuario()">BANIR JOGADOR</button>
+            <section id="chat" class="tab-content">
+                <div id="chat-box" class="chat-messages"></div>
+                <div class="message-input">
+                    <input type="text" id="chat-input" placeholder="Conversar em #geral">
+                    <button onclick="enviarMensagem()">ENVIAR</button>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
 
-    <footer>
-        <a href="https://discord.gg/WMaDevNNy" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" width="25"> NOSSO DISCORD
-        </a>
-    </footer>
+            <section id="loja" class="tab-content">
+                <h2>Arsenal VIP</h2>
+                <div id="lista-vips" class="grid-loja"></div>
+            </section>
+
+            <section id="denuncias" class="tab-content">
+                <h2>Central de Relatórios</h2>
+                <input type="text" id="den-titulo" placeholder="Título da Ocorrência">
+                <textarea id="den-desc" placeholder="Descreva o ocorrido..."></textarea>
+                <button class="btn-primary" onclick="enviarDenuncia()">ENVIAR RELATÓRIO</button>
+            </section>
+
+            <section id="admin" class="tab-content">
+                <div id="admin-login">
+                    <h2>Área Restrita</h2>
+                    <input type="password" id="codigo-admin" placeholder="Código de Comando">
+                    <button class="btn-primary" onclick="acessarPainel()">ENTRAR</button>
+                </div>
+                <div id="admin-tools" style="display:none;">
+                    <h2>Painel de Controle</h2>
+                    <div class="card">
+                        <h3>Postar novo VIP</h3>
+                        <input type="text" id="vip-nome" placeholder="Item">
+                        <input type="text" id="vip-preco" placeholder="Preço">
+                        <button onclick="postarVip()">CADASTRAR</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <script type="module" src="script.js"></script>
 </body>
