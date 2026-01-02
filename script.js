@@ -1,34 +1,48 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    onSnapshot, 
+    query, 
+    orderBy, 
+    serverTimestamp 
+} from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAs0eBwIlKmpcouUvVa8TF2_ke0t9QD6QE",
-  authDomain: "ww2-6c783.firebaseapp.com",
-  projectId: "ww2-6c783",
-  storageBucket: "ww2-6c783.firebasestorage.app",
-  messagingSenderId: "178695207566",
-  appId: "1:178695207566:web:c93cf5dea461664d5ae7df"
-};
+// Sua configuração (mantenha a que você já tem)
+const firebaseConfig = { ... }; 
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Função para trocar de abas
-window.showSection = (id) => {
-    document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-}
+// --- FUNÇÃO PARA ENVIAR MENSAGEM NO CHAT ---
+window.enviarMensagem = async () => {
+    const input = document.getElementById('chat-input');
+    const msg = input.value;
 
-// Acesso Admin
-window.acessarPainel = () => {
-    const cod = document.getElementById('codigo-admin').value;
-    if(cod === "2012") {
-        document.getElementById('login-admin').style.display = 'none';
-        document.getElementById('painel-controle').style.display = 'block';
-        alert("Comandante autenticado!");
-    } else {
-        alert("Código Inválido!");
+    if (msg.trim() !== "") {
+        try {
+            await addDoc(collection(db, "chat-geral"), {
+                texto: msg,
+                usuario: "Soldado Anônimo", // Depois pegamos do perfil
+                data: serverTimestamp()
+            });
+            input.value = ""; // Limpa o campo
+        } catch (e) {
+            console.error("Erro ao enviar: ", e);
+        }
     }
 }
 
-// Lógica de envio de chat e outras funções viriam aqui...
+// --- FUNÇÃO PARA LER O CHAT EM TEMPO REAL ---
+const q = query(collection(db, "chat-geral"), orderBy("data", "asc"));
+
+onSnapshot(q, (snapshot) => {
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML = ""; // Limpa para atualizar
+    snapshot.forEach((doc) => {
+        const dados = doc.data();
+        chatBox.innerHTML += `<p><strong>${dados.usuario}:</strong> ${dados.texto}</p>`;
+    });
+    chatBox.scrollTop = chatBox.scrollHeight; // Rola o chat para baixo
+});
