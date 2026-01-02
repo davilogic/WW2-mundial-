@@ -18,7 +18,18 @@
         </nav>
     </header>
 
-    <main id="content">
+    <main <section id="perfil" style="display:none;">
+    <div class="militar-card">
+        <h2>Ficha de Alistamento</h2>
+        <div class="perfil-info">
+            <input type="text" id="perf-nome" placeholder="Nome de Guerra (Ex: Sgt. Silva)">
+            <input type="text" id="perf-foto" placeholder="URL da Foto ou Logo">
+            <textarea id="perf-bio" placeholder="Sua Bio (Ex: Veterano da FEB, especialista em tanques)"></textarea>
+            <button class="btn-militar" onclick="salvarPerfil()">CONFIRMAR ALISTAMENTO</button>
+        </div>
+    </div>
+    </section>
+        id="content">
         <section id="loja" class="active">
             <h2>Loja VIP - Fortaleça seu Exército</h2>
             <div id="lista-vips" class="grid-container">
