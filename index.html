@@ -1,87 +1,860 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WW2 GUERRA MUNDIAL</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>CAPITAL ROLEPLAY BET</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --primary: #ff6600;
+            --secondary: #cc0000;
+            --border-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* TELA DE LOADING */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 400px;
+            height: 10px;
+            background-color: #222;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 10px var(--primary);
+            animation: load 5s linear forwards;
+        }
+
+        @keyframes load {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* TELA DE AUTH (LOGIN/REGISTRO) */
+        #auth-screen {
+            display: none;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            color: #888;
+            transition: 0.3s;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            background-color: #111;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+        }
+
+        /* DASHBOARD PRINCIPAL */
+        #main-screen {
+            display: none;
+            padding-top: 80px;
+        }
+
+        /* HEADER / NAVBAR */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #0a0a0a;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 900;
+        }
+
+        .logo-area {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+        .logo-area span { color: var(--primary); }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chips-display {
+            background-color: #151515;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .chips-display i {
+            color: var(--primary);
+        }
+
+        .chips-display:hover {
+            background-color: var(--primary);
+            color: black;
+        }
+        .chips-display:hover i { color: black; }
+
+        .profile-btn {
+            background-color: #151515;
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* CONTEÚDO HOME */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .server-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+        .server-title span { color: var(--primary); }
+
+        .server-info {
+            color: #aaa;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* BOX DO TIGRINHO */
+        .game-card {
+            background: linear-gradient(135deg, #1f1f1f, #111);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 102, 0, 0.2);
+        }
+
+        .tiger-logo-box {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 102, 0, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* MODAL DO JOGO DO TIGRINHO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border: 3px solid var(--primary);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            padding: 25px;
+            position: relative;
+            text-align: center;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        .close-modal:hover { color: white; }
+
+        /* ROLETA / SLOTS DO TIGRINHO */
+        .slots-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .slot-box {
+            width: 80px;
+            height: 80px;
+            background-color: #0d0d0d;
+            border: 2px solid #333;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: white;
+            transition: 0.1s;
+        }
+
+        .slot-box.winner {
+            border-color: var(--primary);
+            background-color: #261200;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* CONTROLES DE APOSTA */
+        .bet-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .bet-option {
+            background-color: #222;
+            border: 1px solid #444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .bet-option.selected {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: black;
+        }
+
+        /* MODAL DE COMPRA / CONTATO */
+        .shop-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-zap { background-color: #25D366; color: white; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: bold; display: block;}
+        .btn-discord { background-color: #5865F2; color: white; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: bold; display: block;}
+
+        /* MODAL DE PERFIL / ADMIN */
+        .admin-section {
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .status-msg {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="discord-container">
-        <nav class="sidebar">
-            <div class="server-icon" onclick="showSection('home')">WW2</div>
-            <hr>
-            <div class="nav-item" onclick="showSection('perfil')" title="Perfil">👤</div>
-            <div class="nav-item" onclick="showSection('chat')" title="Chat Geral">💬</div>
-            <div class="nav-item" onclick="showSection('loja')" title="Loja VIP">🛒</div>
-            <div class="nav-item" onclick="showSection('denuncias')" title="Denúncias">🚫</div>
-            <div class="nav-item admin-only" onclick="showSection('admin')" title="Painel Admin">⚙️</div>
-        </nav>
-
-        <main class="content-area">
-            <header class="top-bar">
-                <h1 id="main-title">WW2 GUERRA MUNDIAL</h1>
-                <a href="https://discord.gg/WMaDevNNy" target="_blank" class="discord-link">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
-                </a>
-            </header>
-
-            <section id="home" class="tab-content active">
-                <h2>Bem-vindo ao Front</h2>
-                <p>Prepare-se para a maior simulação de guerra entre Brasil e Alemanha.</p>
-            </section>
-
-            <section id="perfil" class="tab-content">
-                <div class="card">
-                    <h2>Identidade Militar</h2>
-                    <input type="text" id="perf-nome" placeholder="Nome de Guerra">
-                    <input type="text" id="perf-foto" placeholder="URL da Logo/Avatar">
-                    <textarea id="perf-bio" placeholder="Sua Bio..."></textarea>
-                    <button class="btn-primary" onclick="salvarPerfil()">ATUALIZAR DADOS</button>
-                </div>
-            </section>
-
-            <section id="chat" class="tab-content">
-                <div id="chat-box" class="chat-messages"></div>
-                <div class="message-input">
-                    <input type="text" id="chat-input" placeholder="Conversar em #geral">
-                    <button onclick="enviarMensagem()">ENVIAR</button>
-                </div>
-            </section>
-
-            <section id="loja" class="tab-content">
-                <h2>Arsenal VIP</h2>
-                <div id="lista-vips" class="grid-loja"></div>
-            </section>
-
-            <section id="denuncias" class="tab-content">
-                <h2>Central de Relatórios</h2>
-                <input type="text" id="den-titulo" placeholder="Título da Ocorrência">
-                <textarea id="den-desc" placeholder="Descreva o ocorrido..."></textarea>
-                <button class="btn-primary" onclick="enviarDenuncia()">ENVIAR RELATÓRIO</button>
-            </section>
-
-            <section id="admin" class="tab-content">
-                <div id="admin-login">
-                    <h2>Área Restrita</h2>
-                    <input type="password" id="codigo-admin" placeholder="Código de Comando">
-                    <button class="btn-primary" onclick="acessarPainel()">ENTRAR</button>
-                </div>
-                <div id="admin-tools" style="display:none;">
-                    <h2>Painel de Controle</h2>
-                    <div class="card">
-                        <h3>Postar novo VIP</h3>
-                        <input type="text" id="vip-nome" placeholder="Item">
-                        <input type="text" id="vip-preco" placeholder="Preço">
-                        <button onclick="postarVip()">CADASTRAR</button>
-                    </div>
-                </div>
-            </section>
-        </main>
+    <div id="loading-screen">
+        <div class="loading-title">CAPITAL ROLEPLAY</div>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <div id="auth-screen">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchAuthTab('login')">LOGIN</div>
+                <div class="auth-tab" onclick="switchAuthTab('register')">REGISTRO</div>
+            </div>
+            
+            <h2 id="auth-title" style="text-align: center; margin-bottom: 20px; font-size: 1.2rem;">ENTRAR NA CONTA</h2>
+            
+            <form id="auth-form" onsubmit="handleAuth(event)">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="auth-username" placeholder="Nome de usuário no RP" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="auth-password" placeholder="Sua Senha" required>
+                </div>
+                <button type="submit" class="btn" id="auth-submit-btn">Entrar</button>
+            </form>
+            <div id="auth-msg" class="status-msg" style="text-align: center;"></div>
+        </div>
+    </div>
+
+    <div id="main-screen">
+        <header>
+            <div class="logo-area">CAPITAL <span>RP</span></div>
+            <div class="header-actions">
+                <div class="chips-display" onclick="openModal('shop-modal')">
+                    <i class="fa-solid fa-coins"></i>
+                    <span id="global-chips-counter">0</span>
+                </div>
+                <div class="profile-btn" onclick="openModal('profile-modal')">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span id="header-username">Jogador</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <h1 class="server-title">CAPITAL <span>ROLEPLAY BET</span></h1>
+            <div class="server-info">
+                <span><i class="fa-brands fa-discord" style="color: #5865F2;"></i> 1000+ Membros Oficiais</span>
+                <span><i class="fa-solid fa-gamepad" style="color: var(--primary);"></i> L.A.C.O RP</span>
+            </div>
+
+            <div class="game-card" onclick="openModal('tiger-modal')">
+                <div class="tiger-logo-box">
+                    <i class="fa-solid fa-cat"></i>
+                </div>
+                <h2 style="text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">Fortune Tiger Capital</h2>
+                <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Multiplique suas fichas no Tigrinho do Servidor</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tiger-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('tiger-modal')">&times;</span>
+            <h2 style="color: var(--primary);"><i class="fa-solid fa-cat"></i> FORTUNE TIGER</h2>
+            <p style="font-size: 0.85rem; color: #aaa;">Combine os símbolos! Bombas tiram suas fichas!</p>
+            
+            <div class="slots-container">
+                <div id="slot1" class="slot-box"><i class="fa-solid fa-star"></i></div>
+                <div id="slot2" class="slot-box"><i class="fa-solid fa-star"></i></div>
+                <div id="slot3" class="slot-box"><i class="fa-solid fa-star"></i></div>
+            </div>
+
+            <p style="margin-bottom: 10px; font-weight: bold; font-size: 0.9rem;">Escolha o valor da aposta:</p>
+            <div class="bet-selector">
+                <button class="bet-option selected" onclick="setBet(5)">5</button>
+                <button class="bet-option" onclick="setBet(10)">10</button>
+                <button class="bet-option" onclick="setBet(15)">15</button>
+            </div>
+
+            <button class="btn" id="spin-btn" onclick="spinTiger()">GIRAR ROLETAR</button>
+            <div id="game-msg" class="status-msg"></div>
+        </div>
+    </div>
+
+    <div id="shop-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('shop-modal')">&times;</span>
+            <h2><i class="fa-solid fa-wallet" style="color: var(--primary);"></i> SISTEMA DE FICHAS</h2>
+            <p style="margin-top: 10px; font-size: 0.95rem; color: #ccc;">Para resgatar suas fichas por dinheiro dentro do servidor ou comprar mais pacotes de fichas, entre em contato diretamente com a nossa administração pelos links abaixo:</p>
+            
+            <div class="shop-buttons">
+                <a href="https://wa.me/554991467726" target="_blank" class="btn-zap">
+                    <i class="fa-brands fa-whatsapp"></i> Falar com o Dono no WhatsApp
+                </a>
+                <a href="https://discord.gg/zFtBV3Dts" target="_blank" class="btn-discord">
+                    <i class="fa-brands fa-discord"></i> Entrar no Discord Oficial
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('profile-modal')">&times;</span>
+            <h2><i class="fa-solid fa-id-card"></i> PERFIL DO JOGADOR</h2>
+            <p style="margin: 15px 0; font-size: 1.1rem;">Nome: <span id="profile-name-display" style="color: var(--primary); font-weight: bold;">-</span></p>
+            <p style="font-size: 0.9rem; color: #888;">Cargo no Site: <span id="profile-role-display">Membro</span></p>
+
+            <div id="admin-activation-zone">
+                <div class="input-group" style="margin-top: 20px;">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" id="admin-code-input" placeholder="Código de Verificação de Cargo">
+                </div>
+                <button class="btn" style="background: #333;" onclick="checkAdminCode()">Verificar Chave</button>
+            </div>
+
+            <div id="admin-panel" class="admin-section" style="display: none;">
+                <h3 style="color: var(--secondary); margin-bottom: 15px;"><i class="fa-solid fa-crown"></i> PAINEL ADMINISTRATIVO</h3>
+                <div class="input-group">
+                    <i class="fa-solid fa-user-tag"></i>
+                    <input type="text" id="adm-target-user" placeholder="Nome do jogador">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <input type="number" id="adm-chips-amount" placeholder="Quantidade de fichas">
+                </div>
+                <button class="btn" style="background: var(--secondary);" onclick="executeAdminAddChips()">Injetar Fichas</button>
+            </div>
+            <div id="profile-msg" class="status-msg"></div>
+        </div>
+    </div>
+
+    <script>
+        // ESTADO GLOBAL DO SISTEMA
+        let currentAuthMode = 'login';
+        let currentUser = null;
+        let selectedBet = 5;
+
+        // ÍCONES USADOS NO JOGO DO TIGRINHO
+        const TIGER_ICONS = [
+            { icon: '<i class="fa-solid fa-gem" style="color:#00e5ff;"></i>', name: 'diamante', multi: 5 },
+            { icon: '<i class="fa-solid fa-crown" style="color:#ffd700;"></i>', name: 'coroa', multi: 3 },
+            { icon: '<i class="fa-solid fa-coins" style="color:#ff9900;"></i>', name: 'moedas', multi: 2 },
+            { icon: '<i class="fa-solid fa-bomb" style="color:#cc0000;"></i>', name: 'bomba', multi: 0 }
+        ];
+
+        // 1. TIMEOUT DA TELA DE LOADING (5 SEGUNDOS)
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    // Inicia verificando se já existe sessão ativa
+                    checkSession();
+                }, 500);
+            }, 5000);
+        });
+
+        // REGRAS DE ALTERNÂNCIA DA TELA DE AUTH
+        function switchAuthTab(mode) {
+            currentAuthMode = mode;
+            const tabs = document.querySelectorAll('.auth-tab');
+            const title = document.getElementById('auth-title');
+            const btn = document.getElementById('auth-submit-btn');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            document.getElementById('auth-msg').innerText = '';
+
+            if(mode === 'login') {
+                tabs[0].classList.add('active');
+                title.innerText = 'ENTRAR NA CONTA';
+                btn.innerText = 'Entrar';
+            } else {
+                tabs[1].classList.add('active');
+                title.innerText = 'REGISTRAR NOVA CONTA';
+                btn.innerText = 'Criar Conta';
+            }
+        }
+
+        // LÓGICA DE LOGIN E REGISTRO USANDO LOCALSTORAGE
+        function handleAuth(e) {
+            e.preventDefault();
+            const user = document.getElementById('auth-username').value.trim();
+            const pass = document.getElementById('auth-password').value;
+            const msg = document.getElementById('auth-msg');
+
+            if(!user || !pass) return;
+
+            let db = JSON.parse(localStorage.getItem('capital_rp_users')) || {};
+
+            if(currentAuthMode === 'register') {
+                if(db[user.toLowerCase()]) {
+                    msg.style.color = 'var(--secondary)';
+                    msg.innerText = 'Este usuário já está cadastrado!';
+                    return;
+                }
+                // Cria novo perfil com direito a recompensa diária instantânea
+                db[user.toLowerCase()] = {
+                    username: user,
+                    password: pass,
+                    chips: 0,
+                    isAdmin: false,
+                    lastDaily: 0
+                };
+                localStorage.setItem('capital_rp_users', JSON.stringify(db));
+                msg.style.color = '#25D366';
+                msg.innerText = 'Cadastro feito! Mude para o Login e entre.';
+                switchAuthTab('login');
+            } else {
+                // Modo Login
+                const account = db[user.toLowerCase()];
+                if(!account || account.password !== pass) {
+                    msg.style.color = 'var(--secondary)';
+                    msg.innerText = 'Usuário ou senha incorretos!';
+                    return;
+                }
+                
+                // Sucesso no login
+                currentUser = account.username;
+                localStorage.setItem('capital_rp_session', currentUser);
+                msg.innerText = '';
+                enterMainDashboard();
+            }
+        }
+
+        function checkSession() {
+            const session = localStorage.getItem('capital_rp_session');
+            if(session) {
+                let db = JSON.parse(localStorage.getItem('capital_rp_users')) || {};
+                if(db[session.toLowerCase()]) {
+                    currentUser = db[session.toLowerCase()].username;
+                    enterMainDashboard();
+                    return;
+                }
+            }
+            document.getElementById('auth-screen').style.display = 'flex';
+        }
+
+        function enterMainDashboard() {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-screen').style.display = 'block';
+            
+            // Processa o Bônus de Login de 50 fichas por dia
+            claimDailyReward();
+            updateUI();
+        }
+
+        // SISTEMA DE RECOMPENSA DIÁRIA (50 FICHAS A CADA 24 HORAS)
+        function claimDailyReward() {
+            let db = JSON.parse(localStorage.getItem('capital_rp_users'));
+            let account = db[currentUser.toLowerCase()];
+            const now = new Date().getTime();
+            const umDia = 24 * 60 * 60 * 1000; // Milissegundos em um dia
+
+            if (now - account.lastDaily >= umDia) {
+                account.chips += 50;
+                account.lastDaily = now;
+                db[currentUser.toLowerCase()] = account;
+                localStorage.setItem('capital_rp_users', JSON.stringify(db));
+                alert(`Olá, ${account.username}! Você recebeu suas 50 fichas gratuitas do dia! 🎰`);
+            }
+        }
+
+        // ATUALIZADOR INTERFACE GRÁFICA DO CONTEXTO DO USUÁRIO
+        function updateUI() {
+            let db = JSON.parse(localStorage.getItem('capital_rp_users'));
+            let account = db[currentUser.toLowerCase()];
+
+            document.getElementById('global-chips-counter').innerText = account.chips;
+            document.getElementById('header-username').innerText = account.username;
+            document.getElementById('profile-name-display').innerText = account.username;
+            
+            if(account.isAdmin) {
+                document.getElementById('profile-role-display').innerHTML = '<span style="color:var(--secondary); font-weight:bold;">Administrador</span>';
+                document.getElementById('admin-activation-zone').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+            } else {
+                document.getElementById('profile-role-display').innerText = 'Membro';
+                document.getElementById('admin-activation-zone').style.display = 'block';
+                document.getElementById('admin-panel').style.display = 'none';
+            }
+        }
+
+        // GESTÃO DOS MODAIS DO SISTEMA
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            document.getElementById('profile-msg').innerText = '';
+            document.getElementById('game-msg').innerText = '';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // SELETOR DA APOSTA DO TIGRINHO
+        function setBet(amount) {
+            selectedBet = amount;
+            const buttons = document.querySelectorAll('.bet-option');
+            buttons.forEach(b => {
+                if(parseInt(b.innerText) === amount) {
+                    b.classList.add('selected');
+                } else {
+                    b.classList.remove('selected');
+                }
+            });
+        }
+
+        // ENGENHARIA DE GIRO DO JOGO FORTUNE TIGER
+        function spinTiger() {
+            let db = JSON.parse(localStorage.getItem('capital_rp_users'));
+            let account = db[currentUser.toLowerCase()];
+            const msg = document.getElementById('game-msg');
+            const spinBtn = document.getElementById('spin-btn');
+
+            if(account.chips < selectedBet) {
+                msg.style.color = 'var(--secondary)';
+                msg.innerText = 'Você não possui fichas suficientes para esta aposta!';
+                return;
+            }
+
+            // Consome a aposta do saldo do jogador
+            account.chips -= selectedBet;
+            db[currentUser.toLowerCase()] = account;
+            localStorage.setItem('capital_rp_users', JSON.stringify(db));
+            updateUI();
+
+            msg.innerText = 'Girando os rolos... 🐯';
+            spinBtn.disabled = true;
+
+            // Remove marcações de vitórias passadas
+            for(let i=1; i<=3; i++) {
+                document.getElementById(`slot${i}`).classList.remove('winner');
+            }
+
+            // Efeito visual simulado rodando rápido
+            let count = 0;
+            let interval = setInterval(() => {
+                document.getElementById('slot1').innerHTML = TIGER_ICONS[Math.floor(Math.random() * TIGER_ICONS.length)].icon;
+                document.getElementById('slot2').innerHTML = TIGER_ICONS[Math.floor(Math.random() * TIGER_ICONS.length)].icon;
+                document.getElementById('slot3').innerHTML = TIGER_ICONS[Math.floor(Math.random() * TIGER_ICONS.length)].icon;
+                count++;
+                if(count > 10) {
+                    clearInterval(interval);
+                    finalizeSpin(db, account, msg, spinBtn);
+                }
+            }, 100);
+        }
+
+        function finalizeSpin(db, account, msg, spinBtn) {
+            // Sorteio definitivo final
+            const res1 = TIGER_ICONS[Math.floor(Math.random() * TIGER_ICONS.length)];
+            const res2 = TIGER_ICONS[Math.floor(Math.random() * TIGER_ICONS.length)];
+            const res3 = TIGER_ICONS[Math.floor(Math.random() * TIGER_ICONS.length)];
+
+            document.getElementById('slot1').innerHTML = res1.icon;
+            document.getElementById('slot2').innerHTML = res2.icon;
+            document.getElementById('slot3').innerHTML = res3.icon;
+
+            // Verifica se o jogador puxou alguma bomba
+            if(res1.name === 'bomba' || res2.name === 'bomba' || res3.name === 'bomba') {
+                msg.style.color = 'var(--secondary)';
+                msg.innerHTML = '<i class="fa-solid fa-explosion"></i> BOOM! A bomba explodiu seus ganhos!';
+            }
+            // Vitória Máxima: 3 Símbolos iguais
+            else if(res1.name === res2.name && res2.name === res3.name) {
+                let premiacao = selectedBet * res1.multi;
+                account.chips += premiacao;
+                msg.style.color = '#25D366';
+                msg.innerHTML = `<i class="fa-solid fa-trophy"></i> COMBINAÇÃO PERFEITA! Você ganhou ${premiacao} fichas!`;
+                
+                // Destaca os blocos vencedores
+                for(let i=1; i<=3; i++) document.getElementById(`slot${i}`).classList.add('winner');
+            }
+            // Vitória Parcial: Pelo menos 2 símbolos iguais (e sem bombas)
+            else if(res1.name === res2.name || res2.name === res3.name || res1.name === res3.name) {
+                let premiacao = Math.floor(selectedBet * 1.5);
+                account.chips += premiacao;
+                msg.style.color = '#ff9900';
+                msg.innerHTML = `<i class="fa-solid fa-coins"></i> Par parcial! Você recuperou e ganhou ${premiacao} fichas!`;
+            }
+            else {
+                msg.style.color = '#888';
+                msg.innerText = 'Não foi dessa vez. Tente girar novamente!';
+            }
+
+            // Atualiza o banco de dados local com as novas fichas obtidas
+            db[currentUser.toLowerCase()] = account;
+            localStorage.setItem('capital_rp_users', JSON.stringify(db));
+            updateUI();
+            spinBtn.disabled = false;
+        }
+
+        // SISTEMA DO CÓDIGO OCULTO DE ADM (CONFORME REQUISITADO: 2012)
+        function checkAdminCode() {
+            const codeInput = document.getElementById('admin-code-input').value;
+            const msg = document.getElementById('profile-msg');
+
+            if(codeInput === '2012') {
+                let db = JSON.parse(localStorage.getItem('capital_rp_users'));
+                db[currentUser.toLowerCase()].isAdmin = true;
+                localStorage.setItem('capital_rp_users', JSON.stringify(db));
+                msg.style.color = '#25D366';
+                msg.innerText = 'Acesso administrativo concedido com sucesso!';
+                document.getElementById('admin-code-input').value = '';
+                updateUI();
+            } else {
+                msg.style.color = 'var(--secondary)';
+                msg.innerText = 'Código inválido para este nível!';
+            }
+        }
+
+        // FUNÇÃO DO ADMINISTRADOR PARA INJETAR FICHAS EM OUTROS JOGADORES
+        function executeAdminAddChips() {
+            const targetUser = document.getElementById('adm-target-user').value.trim().toLowerCase();
+            const amount = parseInt(document.getElementById('adm-chips-amount').value);
+            const msg = document.getElementById('profile-msg');
+
+            if(!targetUser || isNaN(amount) || amount <= 0) {
+                msg.style.color = 'var(--secondary)';
+                msg.innerText = 'Preencha todos os dados corretamente!';
+                return;
+            }
+
+            let db = JSON.parse(localStorage.getItem('capital_rp_users')) || {};
+
+            if(!db[targetUser]) {
+                msg.style.color = 'var(--secondary)';
+                msg.innerText = 'Jogador alvo não encontrado no sistema!';
+                return;
+            }
+
+            // Injecao das fichas
+            db[targetUser].chips += amount;
+            localStorage.setItem('capital_rp_users', JSON.stringify(db));
+            
+            msg.style.color = '#25D366';
+            msg.innerText = `Sucesso! Foram adicionadas ${amount} fichas na conta de ${db[targetUser].username}.`;
+            
+            document.getElementById('adm-target-user').value = '';
+            document.getElementById('adm-chips-amount').value = '';
+            
+            updateUI();
+        }
+    </script>
 </body>
 </html>
